@@ -1,0 +1,13 @@
+/*Created by Mayur on 15th Feb 2018 */
+.skin-blue .main-header .navbar {
+    background-color: #222d32;
+    }
+    .skin-blue .main-header .logo {
+    background-color: #222d32;
+    color: #fff;
+    border-bottom: 0 solid transparent;
+    }
+    .btn-primary {
+    background-color: #222d32;
+    border-color: #222d32;
+    }

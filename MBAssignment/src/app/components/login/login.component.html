@@ -1,0 +1,227 @@
+  <section class="img">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="www.mindbowser.com">
+        <b style="color:darkblue;">MindBowser</b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+      <form name="loginForm" #loginForm="ngForm" (ngSubmit)=" loginForm.valid && login()">
+        <div class="form-group has-feedback">
+            <input type="text" placeholder="Email" [(ngModel)]="loginData.email" name="email" class="form-control"
+             maxlength="100" pattern="[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})" #email="ngModel" required>
+          <div *ngIf="email.valid || email.touched || loginForm.submitted">
+            <div class="error-msg" *ngIf="email.errors && email.errors.required" class="text-danger">
+              Email is required.
+            </div>
+            <div class="error-msg" *ngIf="email.errors && email.errors.pattern" class="text-danger">
+              Enter Valid Email.
+            </div>
+          </div>
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" class="form-control"
+             maxlength="100" #password="ngModel" required>
+          <div *ngIf="password.valid || password.touched || loginForm.submitted">
+            <div class="error-msg" *ngIf="password.errors && password.errors.required" class="text-danger">
+                password is required.
+            </div>
+          </div>
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          </div>
+          <div class="col-xs-6">
+            <button type="button" (click)="prepareRegister()" class="btn btn-primary btn-block btn-flat">Register</button>
+          </div>
+        </div>
+      </form>
+      <br>
+    </div>
+  </div>
+
+<!-- Manager resigister Popup  -->
+  <div id="register-modal"class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" style="text-align:center">Register</h4>
+        </div>
+        <form name="registerForm" #registerForm="ngForm" (ngSubmit)=" registerForm.valid && registerManager()">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="box">
+                    <div class="box-body">
+                      <div class="box box-solid box-primary">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">First Name
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="text" placeholder="First Name" [(ngModel)]="registerData.firstName" name="firstName" class="form-control"
+                                  pattern="[a-zA-Z/s ]*" maxlength="20" #firstName="ngModel" required>
+                                <div *ngIf="firstName.valid || firstName.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="firstName.errors && firstName.errors.required" class="text-danger">
+                                    First Name is required.
+                                  </div>
+                                  <div class="error-msg" *ngIf="firstName.errors && firstName.errors.pattern" class="text-danger">
+                                    Enter Valid First Name.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Last Name
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="text" placeholder="Last Name" [(ngModel)]="registerData.lastName" name="lastName" class="form-control"
+                                  pattern="[a-zA-Z/s ]*" maxlength="20" #lastName="ngModel" required>
+                                <div *ngIf="lastName.valid || lastName.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="lastName.errors && lastName.errors.required" class="text-danger">
+                                    Last Name is required.
+                                  </div>
+                                  <div class="error-msg" *ngIf="lastName.errors && lastName.errors.pattern" class="text-danger">
+                                    Enter Valid Name.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Email
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="email" placeholder="Email" [(ngModel)]="registerData.email" name="email" class="form-control"
+                                  #email="ngModel" (blur)="checkEmail(registerData.email)" required pattern="[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})">
+                                <div *ngIf="email.valid || email.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="email.errors && email.errors.required" class="text-danger">
+                                    Email is required.
+                                  </div>
+                                  <div class="error-msg" *ngIf="email.errors && email.errors.pattern" class="text-danger">
+                                    Enter Valid Eamil.
+                                  </div>
+                                  <div *ngIf="errordata.isErrorData" class="text-danger"> {{ errordata.errorMessage }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Password
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="password" placeholder="First Name" [(ngModel)]="registerData.password" name="password" class="form-control"
+                                  pattern="[a-zA-Z/s ]*" maxlength="20" #password="ngModel" required>
+                                <div *ngIf="password.valid || password.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="password.errors && password.errors.required" class="text-danger">
+                                    Password is required.
+                                  </div>
+                                  <div class="error-msg" *ngIf="password.errors && password.errors.pattern" class="text-danger">
+                                    Enter Valid Password.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Company Name
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="text" placeholder="companyName" [(ngModel)]="registerData.companyName" name="companyName" class="form-control"
+                                  #companyName="ngModel" required>
+                                <div *ngIf="companyName.valid || companyName.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="companyName.errors && companyName.errors.required" class="text-danger">
+                                    Company Name is required.
+                                  </div>
+                                  <div class="error-msg" *ngIf="companyName.errors && companyName.errors.pattern" class="text-danger">
+                                    Enter Valid Eamil.
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Address
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="text" placeholder="First Name" [(ngModel)]="registerData.address" name="address" class="form-control"
+                                  maxlength="100" #address="ngModel" required>
+                                <div *ngIf="address.valid || address.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="address.errors && address.errors.required" class="text-danger">
+                                    address is required.
+                                  </div>
+                                  <div class="error-msg" *ngIf="address.errors && address.errors.pattern" class="text-danger">
+                                    Enter Valid address.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          <br>
+                          <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label">Date Of Birth
+                                <span style="color:red">*</span>
+                              </label>
+                              <div class="col-sm-9">
+                                <input type="date" placeholder="DOB" [(ngModel)]="registerData.dateOfBirth" name="dob" class="form-control"
+                                 #dob="ngModel" required>
+                                <div *ngIf="dob.valid || dob.touched || registerForm.submitted">
+                                  <div class="error-msg" *ngIf="dob.errors && dob.errors.required" class="text-danger">
+                                    dob is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="pull-right">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="pull-left">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,208 @@
+<div class="page-start w3-animate-left">
+  <section class="content-header">
+    <h1 style="text-align:center">Employee List</h1>
+  </section>
+  <section class="content">
+   <button type="button" class="btn btn-primary pull-right" (click)="prepareAddEmployee()">Add Employee</button>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box effect1">
+          <div class="box-body">
+            <br>
+            <br>
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Mobile</th>
+                  <th>Date Of Birth </th>
+                  <th>Address</th>
+                  <th>City</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of employeeList; let i = index">
+                  <td>{{e.firstName}}</td>
+                  <td>{{e.lastName}}</td>
+                  <td>{{e.mobile}}</td>
+                  <td>{{e.dob | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{e.address}}</td>
+                  <td>{{e.city}}</td>
+                  <td>
+                    <a (click)="prepareEditEmployee(e.employeeId,e.firstName,e.lastName,e.mobile,e.dob,e.address,e.city)"  data-toggle="modal">
+                      <span class="fa fa-edit" title="Edit Employee"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a><i class="fa fa-trash-o btn dropdown-toggle" data-toggle="dropdown"></i>
+                       <ul class="dropdown-menu cnfback clr" style="top: 50%;left: 87%;"role="menu">
+                          <li><span style="color:white">&nbsp;&nbsp;&nbsp;&nbsp;Are You Sure??</span></li>
+                          <li><a class="cnfbtnclr" (click)="deleteEmployee(e.employeeId)">YES</a></li>
+                          <li><a class="cnfbtnclr" (click)="sendCancel()">NO</a></li>
+                      </ul></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div id="employee-modal"class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" style="text-align:center">Add Employee</h4>
+      </div>
+      <form name="registerForm" #registerForm="ngForm" (ngSubmit)="registerForm.valid && saveEmployee()">
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="box">
+                  <div class="box-body">
+                    <div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="col-sm-3 control-label">First Name
+                              <span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                              <input type="text" placeholder="First Name" [(ngModel)]="empData.firstName" name="firstName" class="form-control"
+                                pattern="[a-zA-Z/s ]*" maxlength="20" #firstName="ngModel" required>
+                              <div *ngIf="firstName.valid || firstName.touched || registerForm.submitted">
+                                <div class="error-msg" *ngIf="firstName.errors && firstName.errors.required" class="text-danger">
+                                  First Name is required.
+                                </div>
+                                <div class="error-msg" *ngIf="firstName.errors && firstName.errors.pattern" class="text-danger">
+                                  Enter Valid Name.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="col-sm-3 control-label">Last Name
+                              <span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                              <input type="text" placeholder="Last Name" [(ngModel)]="empData.lastName" name="lastName" class="form-control"
+                                pattern="[a-zA-Z/s ]*" maxlength="20" #lastName="ngModel" required>
+                              <div *ngIf="lastName.valid || lastName.touched || registerForm.submitted">
+                                <div class="error-msg" *ngIf="lastName.errors && lastName.errors.required" class="text-danger">
+                                  Last Name is required.
+                                </div>
+                                <div class="error-msg" *ngIf="lastName.errors && lastName.errors.pattern" class="text-danger">
+                                  Enter Valid Name.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="col-sm-3 control-label">Mobile
+                              <span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                              <input type="text" placeholder="mobile" [(ngModel)]="empData.mobile" name="mobile" class="form-control"
+                                #mobile="ngModel" pattern="\d{10}"  required maxlength="10">
+                              <div *ngIf="mobile.valid || mobile.touched || registerForm.submitted">
+                                <div class="error-msg" *ngIf="mobile.errors && mobile.errors.required" class="text-danger">
+                                  mobile is required.
+                                </div>
+                                <div class="error-msg" *ngIf="mobile.errors && mobile.errors.pattern" class="text-danger">
+                                  Enter Valid Mobile.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="col-sm-3 control-label">Date Of Birth
+                              <span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                              <input type="date" placeholder="DOB" [(ngModel)]="empData.dateOfBirth" name="dob" class="form-control"
+                                maxlength="20" #dob="ngModel" required>
+                              <div *ngIf="dob.valid || dob.touched || registerForm.submitted">
+                                <div class="error-msg" *ngIf="dob.errors && dob.errors.required" class="text-danger">
+                                  dob is required.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="col-sm-3 control-label">Address
+                              <span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                              <input type="text" placeholder="First Name" [(ngModel)]="empData.address" name="address" class="form-control"
+                                maxlength="100" #address="ngModel" required>
+                              <div *ngIf="address.valid || address.touched || registerForm.submitted">
+                                <div class="error-msg" *ngIf="address.errors && address.errors.required" class="text-danger">
+                                  address is required.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="col-sm-3 control-label">City
+                              <span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                              <input type="text" placeholder="city" [(ngModel)]="empData.city" name="city" class="form-control"
+                                #city="ngModel"maxlength="100" required>
+                              <div *ngIf="city.valid || city.touched || registerForm.submitted">
+                                <div class="error-msg" *ngIf="city.errors && city.errors.required" class="text-danger">
+                                  City Name is required.
+                                </div>
+                                <div class="error-msg" *ngIf="city.errors && city.errors.maxlength" class="text-danger">
+                                  City name is too long.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          <div class="pull-left">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
